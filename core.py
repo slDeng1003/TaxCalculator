@@ -1,5 +1,5 @@
 from typing import Union, List, Dict
-from data import CITY_SOCIAL_UPPER_LIMITS, CITY_HOUSING_FUND_LIMITS, TAX_RATE_TABLE
+from data import CITY_SOCIAL_UPPER_LIMITS, CITY_HOUSING_FUND_LIMITS, TAX_RATE_TABLE, MONTHLY_TAX_RATE_TABLE
 
 # ------------------- 核心计算逻辑 -------------------
 def calculate_monthly_details(
@@ -114,3 +114,27 @@ def calculate_monthly_details(
 
     return {"monthly": monthly_details, "annual": annual_summary}
 
+
+def calculate_year_end_bonus(year_end_bonus: float) -> Dict[str, float]:
+    """计算年终奖单独计税的个税、税率及税后金额"""
+    if year_end_bonus <= 0:
+        raise ValueError("年终奖金额必须大于0")
+    
+    monthly_income = year_end_bonus / 12
+    for limit, rate, deduction in MONTHLY_TAX_RATE_TABLE:
+        if monthly_income <= limit:
+            tax_rate = rate
+            quick_deduction = deduction
+            break
+    else:
+        tax_rate = MONTHLY_TAX_RATE_TABLE[-1][1]
+        quick_deduction = MONTHLY_TAX_RATE_TABLE[-1][2]
+    
+    bonus_tax = year_end_bonus * tax_rate - quick_deduction
+    bonus_after_tax = year_end_bonus - bonus_tax
+    
+    return {
+        "tax": round(bonus_tax, 2),
+        "after_tax": round(bonus_after_tax, 2),
+        "tax_rate": round(tax_rate * 100, 2)  # 转为百分比（如10.00表示10%）
+    }
