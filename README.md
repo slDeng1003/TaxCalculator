@@ -17,14 +17,14 @@
 - GUI与可视化：
     - 通过tkinter实现GUI
 - 支持城市
-    - 北京、杭州
+    - 北京、杭州、上海、深圳
     - 后续支持更多城市
 
 **效果演示：**
 ![效果展示](./img/ShowCase.png)
 
 **如何使用:**
-`python tax_calc_gui.py`
+`python main.py`
 
 **后续开发计划：**
 - 支持年终奖单独计税(done)

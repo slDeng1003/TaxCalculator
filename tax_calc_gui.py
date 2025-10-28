@@ -265,9 +265,3 @@ class TaxCalculatorGUI:
             messagebox.showerror("输入错误", str(e), parent=self.root)
         except Exception as e:
             messagebox.showerror("计算失败", f"未知错误：{str(e)}", parent=self.root)
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = TaxCalculatorGUI(root)
-    root.mainloop()
